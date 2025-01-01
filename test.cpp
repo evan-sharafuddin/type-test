@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include <unistd.h> // Linux, need to have <windows.h> for Windows
 
@@ -42,7 +43,15 @@ int main() {
     cout << "more text" << endl;
     cout << "done!" << endl;
 
+    // experiment with harvesting some input text, character by character
+    cout << endl;
+    cout << "type out some text, at the prompt below\n > " << flush;
+    sleep(1);
 
+    int len = 1;
+    vector<char> buf (len);
+    cin.read(&buf[0], len);
+    
 
     
     
