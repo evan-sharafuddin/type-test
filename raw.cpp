@@ -1,6 +1,13 @@
 // experimenting with entering the raw mode in terminal
 
+// C++ headers
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
+
+
+// C headers
 #include <termios.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -10,7 +17,7 @@
 
 
 
-using namespace std;
+// using namespace std;
 
 struct termios orig;
 
@@ -75,8 +82,8 @@ void enable_raw_mode() {
 
     // set timeout for read()
     // these are "control characters", or arrays of bytes
-    raw.c_cc[VMIN] = 0; // can read input immediately
-    raw.c_cc[VTIME] = 10; // max amount of time before read() returns -- in 10ths of a second
+    raw.c_cc[VMIN] = 1; // add pause so it doesnt skip read() // can read input immediately
+    // raw.c_cc[VTIME] = 10; // max amount of time before read() returns -- in 10ths of a second
 
     // write these attributes
     // NOTE: TCSAFLUSH indicates how/when we set the attribute:
@@ -95,8 +102,60 @@ int main() {
     // sleep(1);
 
     enable_raw_mode();
+
+    std::string model = "User should type this out!";
     
-    char c;
+    char input;
+
+    std::string ENDL = "\r\n";
+    std::cout << "Welcome to type test!" << ENDL << std::flush;
+    std::cout << model << ENDL << ENDL << std::flush;
+
+    // printf("Welcome to typeracer!\r\n");
+    
+
+
+    for ( auto it = model.begin(); it != model.end(); ++it ) {
+    // while (1) {  
+        // read user input
+        // char mod = *it;
+        // write(STDOUT_FILENO, &mod, 1);
+
+        if ( read( STDIN_FILENO, &input, 1 ) == -1 && errno != EAGAIN )
+            die("read");
+        // std::cout << input << std::flush;
+
+        // printf and ostream not working here
+
+        if ( input == 127 ) {
+            write(STDOUT_FILENO, "\b\x1b[1P", 5);
+            
+            if ( it == model.begin() ) {
+                --it;
+            }
+            else {
+                it -= 2;
+            }
+            
+            continue;
+        }
+
+        if ( input != *it ) { // set text to red
+            write(STDOUT_FILENO, "\x1b[1;31m", 7);
+        }
+
+        write(STDOUT_FILENO, &input, 1);
+
+        if ( input != *it ) { // set text to default
+            write(STDOUT_FILENO, "\x1b[0m", 4);
+        }
+
+        if ( input == 'q' ) {
+            break;
+        }
+    }
+
+    printf("\r\n");
 
     // reads 1 byte
     // since we are in raw mode, it should read one byte at a time
