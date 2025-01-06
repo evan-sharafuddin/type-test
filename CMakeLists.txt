@@ -4,20 +4,23 @@ project(TypeTest)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# Define the static library target from rawterm.c
-add_library(rawterm STATIC src/rawterm.c)
 
-add_executable(type ${CMAKE_SOURCE_DIR}/src/main.cpp)
+add_subdirectory(rawterm)
 
-target_link_libraries(type rawterm)
+add_executable(type src/main.cpp)
+
+target_link_libraries(type PUBLIC rawterm)
 
 # Add the include directory for the rawterm library
-target_include_directories(rawterm 
-    PUBLIC ${CMAKE_SOURCE_DIR}/include
+
+# NOTE: "PROJECT" refers to the current project. More important when there are submodules
+#       "CMAKE" refers to the overall CMAKE structure
+#       best to use "PROJECT" variables since that will increase scalability
+target_include_directories(type PUBLIC 
+    "${PROJECT_SOURCE_DIR}/rawterm"
+    "${PROJECT_BINARY_DIRECTORY}"
 )
-target_include_directories(type 
-    PUBLIC ${CMAKE_SOURCE_DIR}/include
-)
+
 
 
 
