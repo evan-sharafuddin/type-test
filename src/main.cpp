@@ -4,7 +4,7 @@
 #include "rawterm.h"
 
 int main() {
-    
+
     enable_raw_mode();
 
     std::string model = "User should type this out!";

@@ -1,7 +1,7 @@
 
 #include "rawterm.h"
 
-struct termios orig;
+static struct termios orig;
 
 // use this for error checking
 // if you pipe in or use "<" when calling the executable from the command line

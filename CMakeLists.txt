@@ -1,25 +1,29 @@
-cmake_minimum_required(VERSION 3.10)
+# Adapted from https://cliutils.gitlab.io/modern-cmake/README.html
 
-project(TypeTest)
+cmake_minimum_required(VERSION 3.15...3.31)
 
+project(typetest)
+
+set(CMAKE_C_STANDARD 99)       
 set(CMAKE_CXX_STANDARD 20)
 
-
 add_subdirectory(rawterm)
+# add_library(RawTerm rawterm/rawterm.c)
 
-add_executable(type src/main.cpp)
-
-target_link_libraries(type PUBLIC rawterm)
-
-# Add the include directory for the rawterm library
+add_executable(Type src/main.cpp)
 
 # NOTE: "PROJECT" refers to the current project. More important when there are submodules
 #       "CMAKE" refers to the overall CMAKE structure
 #       best to use "PROJECT" variables since that will increase scalability
-target_include_directories(type PUBLIC 
-    "${PROJECT_SOURCE_DIR}/rawterm"
-    "${PROJECT_BINARY_DIRECTORY}"
+# NOTE: include PROJECT_BINARY_DIRECTORY because that is where library is stored
+target_include_directories(Type PUBLIC 
+    "${CMAKE_SOURCE_DIR}/rawterm"
 )
+
+target_link_libraries(Type PUBLIC rawterm)
+
+
+
 
 
 
