@@ -1,9 +1,13 @@
 
 
-# Helpful links
+# Helpful notes and links
+
+## code structure
+* currently under construction... only used files are `rawterm.h`, `rawterm.c`, and `main.cpp`
+* hoping to develop the `RawTerm` library enough so that it can be used for general terminal apps
 
 ## Compilation
-* using `g++`, you need to link the C standard libraries using the following flag: `lstdc++`
+* cmake now created for compilation
 ## Terminal control
 
 ### Raw mode
