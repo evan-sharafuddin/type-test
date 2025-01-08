@@ -6,6 +6,13 @@
 * currently under construction... only used files are `rawterm.h`, `rawterm.c`, and `main.cpp`
 * hoping to develop the `RawTerm` library enough so that it can be used for general terminal apps
 
+### brainstorming
+* will need two terminal "views"
+    * main menu
+    * game/test interface
+* should have one "terminal" class that has both of these views (also implemented as classes)
+
+
 ## Compilation
 * cmake now created for compilation
 ## Terminal control

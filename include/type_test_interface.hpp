@@ -8,15 +8,8 @@ difficulty modes or styles (i.e. 1 min test, zen)
 #define TYPETESTINTERFACE_HPP
 
 
+class TypeTestInterface {
 
-
-
-
-
-
-
-
-
-
+};
 
 #endif // TYPETESTINTERFACE_HPP

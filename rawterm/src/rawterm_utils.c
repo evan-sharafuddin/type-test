@@ -8,9 +8,14 @@ int out ( char* str ) {
 
 
 // curser naviation
+
+// define initial cursor positions
+static int line = 0;
+static int col = 0; 
+
 #define MAXBUF 7 // includes 3 digit linenumber and 
 #define MAXNUM 999
-int move_cursor_up( int num_lines ) {
+int move_cursor_up( unsigned int num_lines ) {
     if ( num_lines > MAXNUM ) {
         return line_number_size;
     }
@@ -23,7 +28,7 @@ int move_cursor_up( int num_lines ) {
     return write( STDOUT_FILENO, str, strlen(str) );
 }
 
-int move_cursor_down( int num_lines ) {
+int move_cursor_down( unsigned int num_lines ) {
     if ( num_lines > MAXNUM ) {
         return line_number_size;
     }
@@ -34,7 +39,7 @@ int move_cursor_down( int num_lines ) {
     return write( STDOUT_FILENO, str, strlen(str) );
 }
 
-int move_cursor_right( int num_cols ) {
+int move_cursor_right( unsigned int num_cols ) {
     if ( num_cols > MAXNUM ) {
         return line_number_size;
     }    
@@ -45,7 +50,7 @@ int move_cursor_right( int num_cols ) {
     return write( STDOUT_FILENO, str, strlen(str) );
 }
 
-int move_cursor_left( int num_cols ) {
+int move_cursor_left( unsigned int num_cols ) {
     if ( num_cols > MAXNUM ) {
         return line_number_size;
     }
@@ -54,6 +59,10 @@ int move_cursor_left( int num_cols ) {
     sprintf( str, "\x1b[%dD", num_cols );
 
     return write( STDOUT_FILENO, str, strlen(str) );
+}
+
+int move_cursor_home() {
+    return write( STDOUT_FILENO, "\x1b[H", strlen("\x1b[H") );
 }
 
 int newline() {
@@ -129,4 +138,8 @@ int faint() {
 
 int reset_formatting() {
     return write( STDOUT_FILENO, "\x1b[0m", strlen("\x1b[0m") );
+}
+
+int clear_terminal() {
+    return write( STDOUT_FILENO, "\x1b[2J", 4);
 }

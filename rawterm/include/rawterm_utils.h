@@ -6,6 +6,7 @@
 
 #include <unistd.h>
 #include <string.h>
+#include <stdbool.h>
 
 enum errorc {
     success, 
@@ -17,10 +18,11 @@ enum errorc {
 int out( char* );
 
 // cursor navigation
-int move_cursor_up( int );
-int move_cursor_down( int );
-int move_cursor_left( int );
-int move_cursor_right( int );
+int move_cursor_up( unsigned int );
+int move_cursor_down( unsigned int );
+int move_cursor_left( unsigned int );
+int move_cursor_right( unsigned int );
+int move_cursor_home();
 int newline(); 
 
 
@@ -55,5 +57,15 @@ int clear_cursor_to_end();
 int clear_start_to_cursor();
 int clear_line();
 int clear_terminal();
+
+// buttons 
+
+// struct for buttons 
+typedef struct button {
+    char* text;
+    int width;
+    bool sel;
+} button_t;
+
 
 #endif // RAWTERM_UTILS_H
