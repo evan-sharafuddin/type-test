@@ -1,5 +1,9 @@
 // Provides types and functions for widgets such as titles, buttons, etc
 
+
+#ifndef RAWTERM_WIDGETS_H
+#define RAWTERM_WIDGETS_H
+
 typedef struct button {
     char* text; // text to display inside button
     int width;  // width of the button 
@@ -50,3 +54,12 @@ typedef struct widgets {
 // need to think about whether I want to dynamically allocate widget_t,
 // or if its small enough that copying to new stack frame is not that labor intensive
 
+widget_t* default_widget();
+
+void add_button( widget_t*, char*, int  );
+void add_title( widget_t*, char*, int );
+void add_body( widget_t*, char*, int);
+
+void print_buttons( widget_t* );
+
+#endif // RAWTERM_WIDGETS_H

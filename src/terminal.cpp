@@ -14,7 +14,4 @@ Terminal::Terminal()
     move_cursor_home();
 
     
-
-
-
 }

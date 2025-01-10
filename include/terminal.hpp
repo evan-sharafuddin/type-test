@@ -18,8 +18,6 @@ public:
 private:
     MainMenu main_menu;
     TypeTestInterface* type_test; // dynamically bound
-
-
 };
 
 

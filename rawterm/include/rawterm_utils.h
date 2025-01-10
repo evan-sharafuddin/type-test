@@ -58,14 +58,4 @@ int clear_start_to_cursor();
 int clear_line();
 int clear_terminal();
 
-// buttons 
-
-// struct for buttons 
-typedef struct button {
-    char* text;
-    int width;
-    bool sel;
-} button_t;
-
-
 #endif // RAWTERM_UTILS_H
