@@ -1,5 +1,8 @@
 // Provides types and functions for widgets such as titles, buttons, etc
 
+// TODO create static widget struct instance so don't need to call it for each function
+
+
 
 #ifndef RAWTERM_WIDGETS_H
 #define RAWTERM_WIDGETS_H
@@ -61,5 +64,7 @@ void add_title( widget_t*, char*, int );
 void add_body( widget_t*, char*, int);
 
 void print_buttons( widget_t* );
+
+void remove_buttons( widget_t* );
 
 #endif // RAWTERM_WIDGETS_H

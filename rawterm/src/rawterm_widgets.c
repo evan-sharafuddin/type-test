@@ -59,10 +59,15 @@ void add_button( widget_t* w, char* text, int width ) {
         w->buttons = realloc( w->buttons, w->nbuttons*sizeof(button_t) );
     }
 
+    w->buttons[w->nbuttons-1] = bt;
     // check for malloc/realloc issues
     // TODO make this better
     if ( !w->buttons ) fprintf(stderr, "malloc() or realloc() error");
 
+}
+
+void remove_buttons( widget_t* w ) {
+    free( w->buttons );
 }
 
 // TODO might want to more explicitly check for deref null pointers
@@ -71,7 +76,12 @@ void print_buttons( widget_t* w ) {
     button_t bt;
     for ( int i = 0; i < w->nbuttons; ++i ) {
         bt = w->buttons[i];
-        foreground_color( (bt->sel) ? w->fgbutton_sel : w->fgbutton_def );
-
+        foreground_color( (bt.sel) ? w->fgbutton_sel : w->fgbutton_def );
+        background_color( (bt.sel) ? w->fgbutton_sel : w->fgbutton_def );
+        out(bt.text);
+        
+        // TODO implement width and centering of button
+        reset_formatting();
+        out(" ");
     }
 }
