@@ -7,9 +7,11 @@
 #ifndef RAWTERM_WIDGETS_H
 #define RAWTERM_WIDGETS_H
 
+#include <stdbool.h>
+
 typedef struct button {
     char* text; // text to display inside button
-    int width;  // width of the button 
+    int pad;  // padding of the button 
     bool sel;   // whether button is selected by cursor
 } button_t;
 
@@ -59,12 +61,14 @@ typedef struct widgets {
 
 widget_t* default_widget();
 
-void add_button( widget_t*, char*, int  );
-void add_title( widget_t*, char*, int );
-void add_body( widget_t*, char*, int);
+void add_button( char*, int  );
+void add_title( char*, int );
+void add_body( char*, int);
 
-void print_buttons( widget_t* );
+void print_buttons();
 
-void remove_buttons( widget_t* );
+void remove_buttons();
+
+int prompt_buttons();
 
 #endif // RAWTERM_WIDGETS_H

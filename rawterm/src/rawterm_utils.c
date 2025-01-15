@@ -140,6 +140,10 @@ int reset_formatting() {
     return write( STDOUT_FILENO, "\x1b[0m", strlen("\x1b[0m") );
 }
 
+int clear_line() {
+    return write( STDOUT_FILENO, "\x1b[2K\r", 5);
+}
+
 int clear_terminal() {
     return write( STDOUT_FILENO, "\x1b[2J", 4);
 }
