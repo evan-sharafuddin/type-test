@@ -29,7 +29,7 @@ static widget_t widget = {
 };
 
 // TODO add error handelling 
-void add_button( char* text, int pad ) {
+void add_button( const char* text, int pad ) {
     
     // if ( !w ) return; // must have widget_t struct
 
@@ -46,17 +46,23 @@ void add_button( char* text, int pad ) {
     };
 
     // TODO might be more efficent to not realloc() every time adding a button
+
+    // NOTE C++ is type safe, so we cannot rely on implicit cast betwen void* pointer to our struct
+    // need to explicitly cast
+    fprintf(stderr, "here\r\n");
     if ( !(widget.buttons) ) {
-        widget.buttons = malloc( widget.nbuttons*sizeof(button_t) );
+        widget.buttons = (button_t*) malloc( widget.nbuttons*sizeof(button_t) );
     }
     else {
-        widget.buttons = realloc( widget.buttons, widget.nbuttons*sizeof(button_t) );
+        widget.buttons = (button_t*) ( widget.buttons, widget.nbuttons*sizeof(button_t) );
     }
 
-    widget.buttons[widget.nbuttons-1] = bt;
     // check for malloc/realloc issues
     // TODO make this better
+
     if ( !widget.buttons ) fprintf(stderr, "malloc() or realloc() error");
+
+    widget.buttons[widget.nbuttons-1] = bt;
 
 }
 

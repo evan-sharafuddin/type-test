@@ -15,7 +15,7 @@ enum errorc {
 };
 
 // general output
-int out( char* );
+int out( const char* );
 
 // cursor navigation
 int move_cursor_up( unsigned int );
@@ -32,8 +32,8 @@ int hide_cursor();
 
 
 // color options and formatting
-int foreground_color( char* );
-int background_color( char* );
+int foreground_color( const char* );
+int background_color( const char* );
 int bold();
 int italicize();
 int faint();
@@ -48,8 +48,8 @@ typedef struct color {
 
 
 // read modes
-void continuous_read( char* );
-void esc_sequence_read( char* );
+void continuous_read( const char* );
+void esc_sequence_read( const char* );
 
 
 // clearing text

@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 // general output
-int out ( char* str ) {
-    write( STDOUT_FILENO, str, strlen(str) );
+int out ( const char* str ) {
+    return write( STDOUT_FILENO, str, strlen(str) );
 }
 
 
@@ -98,7 +98,7 @@ static color_t colors[NUM_COLORS] = {
 };
 
 #define COLOR_MAXBUF 6
-int foreground_color( char* color ) {
+int foreground_color( const char* color ) {
     for ( int i = 0; i < sizeof(colors) / sizeof(color_t); ++i ) {
         if ( color == colors[i].name ) {
             char str[COLOR_MAXBUF];
@@ -110,7 +110,7 @@ int foreground_color( char* color ) {
     return color_not_found;
 }
 
-int background_color( char* color ) {
+int background_color( const char* color ) {
     for ( int i = 0; i < sizeof(colors) / sizeof(color_t); ++i ) {
         if ( color == colors[i].name ) {
             char str[COLOR_MAXBUF];

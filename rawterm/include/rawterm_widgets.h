@@ -10,18 +10,18 @@
 #include <stdbool.h>
 
 typedef struct button {
-    char* text; // text to display inside button
+    const char* text; // text to display inside button
     int pad;  // padding of the button 
     bool sel;   // whether button is selected by cursor
 } button_t;
 
 typedef struct title {
-    char* text; // text for title 
+    const char* text; // text for title 
     int width;  // width of the button
 } title_t;
 
 typedef struct body {
-    char* text; // body text
+    const char* text; // body text
     int width;  // width of the box containing body text
 } body_t;
 
@@ -41,16 +41,16 @@ typedef struct widgets {
 
     // default foreground and background colors of each widget
     // buttons have selected and deselected color combinations
-    char* fgbutton_sel;
-    char* bgbutton_sel;
-    char* fgbutton_def;
-    char* bgbutton_def;
+    const char* fgbutton_sel;
+    const char* bgbutton_sel;
+    const char* fgbutton_def;
+    const char* bgbutton_def;
 
-    char* fgtitle;
-    char* bgtitle;
+    const char* fgtitle;
+    const char* bgtitle;
 
-    char* fgbody;
-    char* bgbody;
+    const char* fgbody;
+    const char* bgbody;
 
 } widget_t;
 
@@ -61,9 +61,9 @@ typedef struct widgets {
 
 widget_t* default_widget();
 
-void add_button( char*, int  );
-void add_title( char*, int );
-void add_body( char*, int);
+void add_button( const char*, int  );
+void add_title( const char*, int );
+void add_body( const char*, int);
 
 void print_buttons();
 
