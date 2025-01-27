@@ -26,11 +26,5 @@ Terminal::Terminal()
 
     // display title text
     out(ascii_art);
-
-
-
     
-
-    
-
 }

@@ -4,7 +4,7 @@
 #include "main_menu.cpp"
 #include "terminal.cpp"
 
-#include "rawterm_utils.c"
+#include "rawterm_utils.h"
 
 int main() {
     Terminal t;
