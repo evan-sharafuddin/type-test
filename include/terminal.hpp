@@ -15,7 +15,8 @@ public:
     Terminal();
     ~Terminal();
 
-private:
+// make the following private eventually
+// private:
     MainMenu main_menu;
     TypeTestInterface* type_test; // dynamically bound
 };

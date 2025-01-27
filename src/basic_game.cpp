@@ -1,27 +1,19 @@
-#include "type_test_basic.hpp"
-#include "rawterm.h"
-#include "rawterm_utils.h"
+
 
 #include <iostream>
+#include "rawterm.h"
 
-TypeTestBasic::TypeTestBasic() {
-    std::cout << "Created TypeTestBasic instance" << std::endl;
-}
+int main() {
 
-TypeTestBasic::~TypeTestBasic() {
-    std::cout << "Destroyed TypeTestBasic instance" << std::endl;
-}
-
-void run() {
+    enable_raw_mode();
 
     std::string model = "User should type this out!";
     
     char input;
 
-    clear_terminal();
-
-    // TODO might have to change this here
-    std::cout << model << "\r\n" << std::flush;
+    std::string ENDL = "\r\n";
+    std::cout << "Welcome to type test!" << ENDL << std::flush;
+    std::cout << model << ENDL << ENDL << std::flush;
 
     for ( auto it = model.begin(); it != model.end(); ++it ) {
 
@@ -56,6 +48,7 @@ void run() {
         }
     }
 
-    std::cout << "\r\nDone\r\n" << std::endl;
+    printf("\r\n");
 
+    return 0;
 }

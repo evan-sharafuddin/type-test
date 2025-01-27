@@ -7,7 +7,7 @@
 #include <string>
 #include <fstream>
 
-class TypeTestBasic {
+class TypeTestBasic : public TypeTestInterface {
 
 public:
     TypeTestBasic();
