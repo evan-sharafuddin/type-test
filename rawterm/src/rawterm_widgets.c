@@ -29,7 +29,8 @@ static widget_t widget = {
 };
 
 // TODO add error handelling 
-void add_button( const char* text, int pad ) {
+// NOTE returns index of the button 
+int add_button( const char* text, int pad ) {
     
     // if ( !w ) return; // must have widget_t struct
 
@@ -49,12 +50,11 @@ void add_button( const char* text, int pad ) {
 
     // NOTE C++ is type safe, so we cannot rely on implicit cast betwen void* pointer to our struct
     // need to explicitly cast
-    fprintf(stderr, "here\r\n");
     if ( !(widget.buttons) ) {
         widget.buttons = (button_t*) malloc( widget.nbuttons*sizeof(button_t) );
     }
     else {
-        widget.buttons = (button_t*) ( widget.buttons, widget.nbuttons*sizeof(button_t) );
+        widget.buttons = (button_t*) realloc( widget.buttons, widget.nbuttons*sizeof(button_t) );
     }
 
     // check for malloc/realloc issues
@@ -63,6 +63,9 @@ void add_button( const char* text, int pad ) {
     if ( !widget.buttons ) fprintf(stderr, "malloc() or realloc() error");
 
     widget.buttons[widget.nbuttons-1] = bt;
+
+    // return index of this button (this will always be 0 or greater)
+    return widget.nbuttons - 1;
 
 }
 

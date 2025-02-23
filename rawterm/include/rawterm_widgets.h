@@ -61,7 +61,7 @@ typedef struct widgets {
 
 widget_t* default_widget();
 
-void add_button( const char*, int  );
+int add_button( const char*, int  );
 void add_title( const char*, int );
 void add_body( const char*, int);
 
