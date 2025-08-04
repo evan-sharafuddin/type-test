@@ -1,17 +1,26 @@
 #include "rawterm_utils.h"
 #include <stdio.h>
 
+/* 
+* testing out new way to do things
+* only call out for key sequences that are not escape sequencies. 
+* for escape sequences use the hepler functions
+* keeping track of line and column for each call of out, move_cursor_..., etc
+
+*/
+// define initial cursor positions
+static int line = 0;
+static int col = 0; 
+
 // general output
 int out ( const char* str ) {
+    size_t len = strlen(str);
+    col += len;
     return write( STDOUT_FILENO, str, strlen(str) );
 }
 
 
 // curser naviation
-
-// define initial cursor positions
-static int line = 0;
-static int col = 0; 
 
 #define MAXBUF 7 // includes 3 digit linenumber and 
 #define MAXNUM 999
@@ -20,11 +29,16 @@ int move_cursor_up( unsigned int num_lines ) {
         return line_number_size;
     }
 
+    if ( line - num_lines < 0 ) {
+        return out_of_bounds;
+    }
+
+    line -= num_lines;
+
     char str[MAXBUF];
     // don't need snprintf becaues never will overflow buffer based on above
-
     sprintf( str, "\x1b[%dA", num_lines );
-    
+
     return write( STDOUT_FILENO, str, strlen(str) );
 }
 
@@ -32,6 +46,8 @@ int move_cursor_down( unsigned int num_lines ) {
     if ( num_lines > MAXNUM ) {
         return line_number_size;
     }
+
+    line += num_lines;
 
     char str[MAXBUF];
     sprintf( str, "\x1b[%dB", num_lines );
@@ -44,6 +60,8 @@ int move_cursor_right( unsigned int num_cols ) {
         return line_number_size;
     }    
 
+    col += num_cols;
+
     char str[MAXBUF];
     sprintf( str, "\x1b[%dC", num_cols );
 
@@ -54,6 +72,12 @@ int move_cursor_left( unsigned int num_cols ) {
     if ( num_cols > MAXNUM ) {
         return line_number_size;
     }
+
+    if ( col - num_cols < 0 ) {
+        return out_of_bounds;
+    }
+
+    col -= num_cols;
 
     char str[MAXBUF];
     sprintf( str, "\x1b[%dD", num_cols );
@@ -66,6 +90,8 @@ int move_cursor_home() {
 }
 
 int newline() {
+    col = 0;
+    line++;
     return write( STDOUT_FILENO, "\r\n", strlen("\r\n") );
 }
 
@@ -141,9 +167,14 @@ int reset_formatting() {
 }
 
 int clear_line() {
+    col = 0;
     return write( STDOUT_FILENO, "\x1b[2K\r", 5);
 }
 
 int clear_terminal() {
     return write( STDOUT_FILENO, "\x1b[2J", 4);
+}
+
+int clear_char() {
+    return write(STDOUT_FILENO, "\b\x1b[1P", 5);
 }

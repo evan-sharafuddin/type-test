@@ -23,8 +23,6 @@ target_include_directories(TypeBasic PUBLIC
 target_link_libraries(TypeBasic PUBLIC rawterm)
 
 
-message(CMAKE_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
-
 # add_executable(Type src/main.cpp)
 
 # target_include_directories(Type PUBLIC 

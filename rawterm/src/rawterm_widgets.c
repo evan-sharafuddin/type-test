@@ -2,10 +2,12 @@
 
 #include "rawterm_widgets.h"
 #include "rawterm_utils.h"
+#include "rawterm.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+
 
 static widget_t widget = {
     .buttons = NULL,

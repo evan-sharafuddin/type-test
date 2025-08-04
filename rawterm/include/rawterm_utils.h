@@ -8,10 +8,15 @@
 #include <string.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif 
+
 enum errorc {
     success, 
     line_number_size, // line number is too big for character buffer
-    color_not_found   // color name not found in list of colors
+    color_not_found,   // color name not found in list of colors
+    out_of_bounds // desired cursor movement was out of bounds for terminal
 };
 
 // general output
@@ -57,5 +62,10 @@ int clear_cursor_to_end();
 int clear_start_to_cursor();
 int clear_line();
 int clear_terminal();
+int clear_char();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // RAWTERM_UTILS_H

@@ -7,6 +7,10 @@
 #ifndef RAWTERM_WIDGETS_H
 #define RAWTERM_WIDGETS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif 
+
 #include <stdbool.h>
 
 typedef struct button {
@@ -70,5 +74,9 @@ void print_buttons();
 void remove_buttons();
 
 int prompt_buttons();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // RAWTERM_WIDGETS_H
