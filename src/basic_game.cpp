@@ -42,15 +42,34 @@ int main() {
                 mistake_cnt--;
             }
             
+            // delete from debug line as well
+            move_cursor_down(1);
+            clear_char();
+            move_cursor_up(1);
+            // char c = *it;
+            // std::string one_char_str(1, c);       // C++ string with one character
+            // const char* cstr = one_char_str.c_str(); // const char* of that string
+            // move_cursor_down(1);
+            // // std::string strr = std::to_string(mistake_cnt);
+            // // const char* strr2 = strr.c_str();
+            // clear_char();
+            // // out(strr2);
+            
+            // out(cstr);
+            // // move_cursor_left(1);
+            // move_cursor_up(1);
+            
             continue;
         }
 
         if ( input != *it || mistake_cnt > 0 ) { // set text to red
-            write(STDOUT_FILENO, "\x1b[1;31m", 7);
+            // write(STDOUT_FILENO, "\x1b[1;31m", 7);
+            foreground_color("red");
             mistake_cnt++;
         }
         else {
-            write(STDOUT_FILENO, "\x1b[0m", 4);
+            foreground_color("black");
+            // write(STDOUT_FILENO, "\x1b[0m", 4);
         }
 
         write(STDOUT_FILENO, &input, 1);
@@ -65,6 +84,7 @@ int main() {
         std::string one_char_str(1, c);       // C++ string with one character
         const char* cstr = one_char_str.c_str(); // const char* of that string
         move_cursor_down(1);
+        move_cursor_left(1);
         // std::string strr = std::to_string(mistake_cnt);
         // const char* strr2 = strr.c_str();
         clear_char();
@@ -72,6 +92,7 @@ int main() {
         
         out(cstr);
         // move_cursor_left(1);
+        move_cursor_right(1);
         move_cursor_up(1);
 
         // test_cnt++;
