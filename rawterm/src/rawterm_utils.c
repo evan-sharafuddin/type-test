@@ -126,8 +126,7 @@ static color_t colors[NUM_COLORS] = {
 #define COLOR_MAXBUF 6
 int foreground_color( const char* color ) {
     for ( int i = 0; i < sizeof(colors) / sizeof(color_t); ++i ) {
-        int b = !strcmp( color, colors[i].name );
-        if ( b ) {
+        if ( !strcmp( color, colors[i].name ) ) {
             char str[COLOR_MAXBUF];
             snprintf( str, COLOR_MAXBUF, "\x1b[%dm", colors[i].fg );
             return write( STDOUT_FILENO, str, strlen(str) );
@@ -173,9 +172,20 @@ int clear_line() {
 }
 
 int clear_terminal() {
+    line = 0;
+    col  = 0;
     return write( STDOUT_FILENO, "\x1b[2J", 4);
 }
 
 int clear_char() {
+    col--;
     return write(STDOUT_FILENO, "\b\x1b[1P", 5);
+}
+
+int get_line() {
+    return line;
+}
+
+int get_col() {
+    return col;
 }

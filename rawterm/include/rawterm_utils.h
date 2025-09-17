@@ -64,6 +64,10 @@ int clear_line();
 int clear_terminal();
 int clear_char();
 
+// getters
+int get_line();
+int get_col();
+
 #ifdef __cplusplus
 }
 #endif

@@ -29,36 +29,33 @@ int main() {
             die("read");
 
         if ( input == 127 ) {
-            write(STDOUT_FILENO, "\b\x1b[1P", 5);
+            clear_char();
             
             if ( it == model.begin() ) {
                 --it;
             }
             else {
                 it -= 2;
+
             }
 
             if (mistake_cnt > 0) {
                 mistake_cnt--;
             }
             
-            // delete from debug line as well
+            // print out some debug stuff
+            char c = *it;
+            std::string one_char_str(1, c);       // C++ string with one character
+            const char* cstr = one_char_str.c_str(); // const char* of that string
+            int prevcol  = get_col();
             move_cursor_down(1);
-            clear_char();
+            clear_line();
+            char num[20];
+            sprintf( num, "%d", mistake_cnt );
+            out( num );  
+            move_cursor_right(prevcol - 1);
             move_cursor_up(1);
-            // char c = *it;
-            // std::string one_char_str(1, c);       // C++ string with one character
-            // const char* cstr = one_char_str.c_str(); // const char* of that string
-            // move_cursor_down(1);
-            // // std::string strr = std::to_string(mistake_cnt);
-            // // const char* strr2 = strr.c_str();
-            // clear_char();
-            // // out(strr2);
-            
-            // out(cstr);
-            // // move_cursor_left(1);
-            // move_cursor_up(1);
-            
+
             continue;
         }
 
@@ -79,43 +76,22 @@ int main() {
         }
 
         // print out some debug stuff
-
         char c = *it;
         std::string one_char_str(1, c);       // C++ string with one character
         const char* cstr = one_char_str.c_str(); // const char* of that string
+        int prevcol  = get_col();
         move_cursor_down(1);
-        move_cursor_left(1);
-        // std::string strr = std::to_string(mistake_cnt);
-        // const char* strr2 = strr.c_str();
-        clear_char();
-        // out(strr2);
-        
-        out(cstr);
-        // move_cursor_left(1);
-        move_cursor_right(1);
+        clear_line();
+        char num[10];
+        sprintf( num, "%d", mistake_cnt );
+        out( num );  
+        move_cursor_right(prevcol - 1);
         move_cursor_up(1);
 
-        // test_cnt++;
-        // if ( test_cnt > 4 ) {
-        //     // clear_terminal();
-        //     clear_terminal();
-        //     move_cursor_home();
-        //     test_cnt = 0;
-        // }
-        
+        // iterate model iterator depending on correctness or whether user has completed the model
         if ( it == model.end() && mistake_cnt > 0 ) {
 
             it--;
-            // move_cursor_down(2);
-            // std::string strr = std::to_string(mistake_cnt);
-            // const char* strr2 = strr.c_str();
-            // clear_char();
-            // // const char* 
-            // out(&(*it));
-            // // move_cursor_left(1);
-            // move_cursor_up(2);
-            // // mistake_cnt--;
-
         }
         else if ( it == model.end() ) {
             break;
@@ -123,6 +99,7 @@ int main() {
         else {
             it++;
         }
+        // move_cursor_right(1);
     }
 
     printf("\r\n");
