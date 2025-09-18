@@ -12,6 +12,7 @@ add_subdirectory(rawterm)
 
 add_executable(TypeBasic src/basic_game.cpp)
 
+add_executable(TestExe   src/rawterm_test.cpp)
 # NOTE: "PROJECT" refers to the current project. More important when there are submodules
 #       "CMAKE" refers to the overall CMAKE structure
 #       best to use "PROJECT" variables since that will increase scalability
@@ -22,6 +23,11 @@ target_include_directories(TypeBasic PUBLIC
 
 target_link_libraries(TypeBasic PUBLIC rawterm)
 
+target_include_directories(TestExe PUBLIC 
+    "${CMAKE_SOURCE_DIR}/rawterm"
+)
+
+target_link_libraries(TestExe PUBLIC rawterm)
 
 # add_executable(Type src/main.cpp)
 

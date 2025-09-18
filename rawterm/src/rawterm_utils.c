@@ -16,7 +16,7 @@ static int col = 0;
 int out ( const char* str ) {
     size_t len = strlen(str);
     col += len;
-    return write( STDOUT_FILENO, str, strlen(str) );
+    return write( STDOUT_FILENO, str, len );
 }
 
 
@@ -60,6 +60,10 @@ int move_cursor_right( unsigned int num_cols ) {
         return line_number_size;
     }    
 
+    if ( num_cols < 0 ) {
+        return out_of_bounds;
+    }
+
     col += num_cols;
 
     char str[MAXBUF];
@@ -74,6 +78,10 @@ int move_cursor_left( unsigned int num_cols ) {
     }
 
     if ( col - num_cols < 0 ) {
+        return out_of_bounds;
+    }
+
+    if ( num_cols < 0 ) {
         return out_of_bounds;
     }
 
@@ -178,7 +186,8 @@ int clear_terminal() {
 }
 
 int clear_char() {
-    col--;
+    // col--;
+    col = col <= 0 ? 0 : --col;
     return write(STDOUT_FILENO, "\b\x1b[1P", 5);
 }
 
@@ -188,4 +197,12 @@ int get_line() {
 
 int get_col() {
     return col;
+}
+
+int save_cursor() {
+    return write(STDOUT_FILENO, "\x1b[s", 3);
+}
+
+int restore_cursor() {
+    return write(STDOUT_FILENO, "\x1b[u", 3);
 }

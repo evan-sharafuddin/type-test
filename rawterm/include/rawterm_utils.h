@@ -20,6 +20,7 @@ enum errorc {
 };
 
 // general output
+// DO NOT PRINT SPECIAL CHARACTERS OR COL COUNT WILL BE OFF
 int out( const char* );
 
 // cursor navigation
@@ -29,6 +30,8 @@ int move_cursor_left( unsigned int );
 int move_cursor_right( unsigned int );
 int move_cursor_home();
 int newline(); 
+int save_cursor();
+int restore_cursor();   
 
 
 // cursor options
