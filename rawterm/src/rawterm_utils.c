@@ -9,13 +9,13 @@
 
 */
 // define initial cursor positions
-static int line = 0;
-static int col = 0; 
+static int rawterm_line = 0;
+static int rawterm_col = 0; 
 
 // general output
 int out ( const char* str ) {
     size_t len = strlen(str);
-    col += len;
+    rawterm_col += len;
     return write( STDOUT_FILENO, str, len );
 }
 
@@ -29,11 +29,11 @@ int move_cursor_up( unsigned int num_lines ) {
         return line_number_size;
     }
 
-    if ( line - num_lines < 0 ) {
+    if ( rawterm_line - num_lines < 0 ) {
         return out_of_bounds;
     }
 
-    line -= num_lines;
+    rawterm_line -= num_lines;
 
     char str[MAXBUF];
     // don't need snprintf becaues never will overflow buffer based on above
@@ -47,7 +47,7 @@ int move_cursor_down( unsigned int num_lines ) {
         return line_number_size;
     }
 
-    line += num_lines;
+    rawterm_line += num_lines;
 
     char str[MAXBUF];
     sprintf( str, "\x1b[%dB", num_lines );
@@ -64,7 +64,7 @@ int move_cursor_right( unsigned int num_cols ) {
         return out_of_bounds;
     }
 
-    col += num_cols;
+    rawterm_col += num_cols;
 
     char str[MAXBUF];
     sprintf( str, "\x1b[%dC", num_cols );
@@ -77,7 +77,7 @@ int move_cursor_left( unsigned int num_cols ) {
         return line_number_size;
     }
 
-    if ( col - num_cols < 0 ) {
+    if ( rawterm_col - num_cols < 0 ) {
         return out_of_bounds;
     }
 
@@ -85,7 +85,7 @@ int move_cursor_left( unsigned int num_cols ) {
         return out_of_bounds;
     }
 
-    col -= num_cols;
+    rawterm_col -= num_cols;
 
     char str[MAXBUF];
     sprintf( str, "\x1b[%dD", num_cols );
@@ -98,8 +98,8 @@ int move_cursor_home() {
 }
 
 int newline() {
-    col = 0;
-    line++;
+    rawterm_col = 0;
+    rawterm_line++;
     return write( STDOUT_FILENO, "\r\n", strlen("\r\n") );
 }
 
@@ -175,28 +175,28 @@ int reset_formatting() {
 }
 
 int clear_line() {
-    col = 0;
+    rawterm_col = 0;
     return write( STDOUT_FILENO, "\x1b[2K\r", 5);
 }
 
 int clear_terminal() {
-    line = 0;
-    col  = 0;
+    rawterm_line = 0;
+    rawterm_col  = 0;
     return write( STDOUT_FILENO, "\x1b[2J", 4);
 }
 
 int clear_char() {
     // col--;
-    col = col <= 0 ? 0 : --col;
+    rawterm_col = rawterm_col <= 0 ? 0 : --rawterm_col;
     return write(STDOUT_FILENO, "\b\x1b[1P", 5);
 }
 
 int get_line() {
-    return line;
+    return rawterm_line;
 }
 
 int get_col() {
-    return col;
+    return rawterm_col;
 }
 
 int save_cursor() {
