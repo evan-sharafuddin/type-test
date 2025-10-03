@@ -9,6 +9,7 @@
 int main() {
 
     enable_raw_mode();
+    // setvbuf(stdout, NULL, _IONBF, 0);  // disables buffering
 
     std::string model = "User should type this out!";
     
@@ -23,6 +24,8 @@ int main() {
 
     auto it = model.begin();
 
+    move_cursor_down(1);
+    move_cursor_up(1);
     while ( true ) {
 
         if ( read( STDIN_FILENO, &input, 1 ) == -1 && errno != EAGAIN )
@@ -85,7 +88,8 @@ int main() {
         char input_cstr [2];
         input_cstr[0] = input;
         input_cstr[1] = '\0';
-        out( input_cstr );
+        // out( input_cstr );
+        write(STDOUT_FILENO, &input, 1);
 
         if ( input == 'q' ) {
             break;
@@ -95,13 +99,30 @@ int main() {
         char c = *it;
         std::string one_char_str(1, c);       // C++ string with one character
         const char* cstr = one_char_str.c_str(); // const char* of that string
-        int prevcol  = get_col();
+        // int line = get_line();
+        // int col  = get_col();
+        // move_cursor_down(1);
         save_cursor();
         move_cursor_down(1);
-        clear_line();
-        std::string num = std::to_string( prevcol );
-        out( num.c_str() );  
+        out( "t" );
         restore_cursor();
+        // int cols_right = col - get_col() > 0 ? col - get_col() : 0;
+        // int lines_up   = line - get_line() > 0 ? line - get_line() : 0;
+        // move_cursor_right( cols_right );
+        // move_cursor_up( 1 );
+        // restore_cursor();
+
+
+        // char c = *it;
+        // std::string one_char_str(1, c);       // C++ string with one character
+        // const char* cstr = one_char_str.c_str(); // const char* of that string
+        // int prevcol  = get_col();
+        // save_cursor();
+        // move_cursor_down(1);
+        // clear_line();
+        // std::string num = std::to_string( prevcol );
+        // out( num.c_str() );  
+        // restore_cursor();
         // int curcol = get_col();
         // if (prevcol == curcol) {}
         // else if ( prevcol > curcol )

@@ -11,6 +11,8 @@
 // define initial cursor positions
 static int rawterm_line = 0;
 static int rawterm_col = 0; 
+static int saved_line = 0;
+static int saved_col = 0;
 
 // general output
 int out ( const char* str ) {
@@ -200,9 +202,26 @@ int get_col() {
 }
 
 int save_cursor() {
-    return write(STDOUT_FILENO, "\x1b[s", 3);
+    // return write(STDOUT_FILENO, "\x1b[s", 3);
+    saved_line = rawterm_line;
+    saved_col  = rawterm_col;
+    // return write(STDOUT_FILENO, "\x1b" "7", 2);  // ESC 7
+    return 0;
 }
 
 int restore_cursor() {
-    return write(STDOUT_FILENO, "\x1b[u", 3);
+    if ( ( rawterm_col - saved_col ) > 0 )
+        move_cursor_left( rawterm_col - saved_col );
+    else if ( ( saved_col - rawterm_col ) > 0 )
+        move_cursor_right( saved_col - rawterm_col );
+
+    if ( ( rawterm_line - saved_line ) > 0 )
+        move_cursor_up( rawterm_line - saved_line );
+    else if ( ( saved_line - rawterm_line ) > 0 )
+        move_cursor_down( saved_line - rawterm_line );
+
+    rawterm_line = saved_line;
+    rawterm_col = saved_col;
+    return 0;
+    // return write(STDOUT_FILENO, "\x1b" "8", 2);  // ESC 8
 }
