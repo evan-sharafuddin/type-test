@@ -24,131 +24,115 @@ int main() {
 
     auto it = model.begin();
 
-    move_cursor_down(1);
-    move_cursor_up(1);
+    // make some room in the terminal!
+    move_cursor_down(5);
+    move_cursor_up(5);
+
     while ( true ) {
 
         if ( read( STDIN_FILENO, &input, 1 ) == -1 && errno != EAGAIN )
             die("read");
 
-        if ( input == 127 ) {
-            clear_char();
-            
-            // if ( it == model.begin() ) {
-            //     --it;
-            // }
-            // else {
-            //     it -= 2;
-
-            // }
-
-            // if (mistake_cnt > 0) {
-            //     mistake_cnt--;
-            // }
-            
-            // // print out some debug stuff
-            // char c = *it;
-            // std::string one_char_str(1, c);       // C++ string with one character
-            // const char* cstr = one_char_str.c_str(); // const char* of that string
-            // int prevcol  = get_col();
-            // move_cursor_down(1);
-            // clear_line();
-            // std::string num = std::to_string( prevcol );
-            // out( num.c_str() );  
-
-            // int curcol = get_col();
-            // if (prevcol == curcol) {}
-            // else if ( prevcol > curcol )
-            //     move_cursor_right(prevcol - curcol);
-            // else
-            //     move_cursor_left(curcol - prevcol);
-            // move_cursor_up(1);    
-
-
-            continue;
-        }
-
-
-        if ( input == 'r' ) 
-            foreground_color("red");
-        if ( input == 'b' )
-            foreground_color("black");
-            
-        // if ( input != *it || mistake_cnt > 0 ) { // set text to red
-        //     // write(STDOUT_FILENO, "\x1b[1;31m", 7);
-        //     foreground_color("red");
-        //     mistake_cnt++;
-        // }
-        // else {
-        //     foreground_color("black");
-        //     // write(STDOUT_FILENO, "\x1b[0m", 4);
-        // }
-
-        // write(STDOUT_FILENO, &input, 1);
-        char input_cstr [2];
-        input_cstr[0] = input;
-        input_cstr[1] = '\0';
-        // out( input_cstr );
-        write(STDOUT_FILENO, &input, 1);
-
         if ( input == 'q' ) {
             break;
         }
+        
+        if ( input == 127 ) {
+            clear_char();
+            
+            if (mistake_cnt > 0) { // only need to keep track of the mistake count, don't need to increment counter
+                mistake_cnt--;
+                it--;
+
+                if (mistake_cnt == 0) {
+                    foreground_color("black");
+                }
+            }
+            else if ( it == model.begin() ) { // don't want to go out of bounds, keep the 
+                // --it;
+                continue;
+            }
+            else {
+                // it -= 2;
+                it--;
+            }
+
+
+            
+            // // print out some debug stuff
+            char c = *it;
+            std::string one_char_str(1, c);       // C++ string with one character
+            const char* cstr = one_char_str.c_str(); // const char* of that string
+            save_cursor();
+            move_cursor_down(1);
+            clear_line();
+            out( cstr );
+            restore_cursor();
+
+                    // maximum length for an int as string: -2147483648 → 11 chars + '\0'
+            char buf[12];
+            int len = snprintf(buf, sizeof(buf), "%d", mistake_cnt);
+            // if (len < 0) return -1;       // error
+            // return out(buf);               // call your existing out()
+            save_cursor();
+            move_cursor_down(2);
+            clear_line();
+            out( buf );
+            restore_cursor();
+
+   
+            continue;
+        }
+
+            
+        if ( input != *it || mistake_cnt > 0 ) { // set text to red
+            // write(STDOUT_FILENO, "\x1b[1;31m", 7);
+            foreground_color("red");
+            mistake_cnt++;
+        }
+        else {
+            foreground_color("black");
+            // write(STDOUT_FILENO, "\x1b[0m", 4);
+        }
+
+        char input_cstr [2];
+        input_cstr[0] = input;
+        input_cstr[1] = '\0';
+        out( input_cstr );
 
         // print out some debug stuff
         char c = *it;
         std::string one_char_str(1, c);       // C++ string with one character
         const char* cstr = one_char_str.c_str(); // const char* of that string
-        // int line = get_line();
-        // int col  = get_col();
-        // move_cursor_down(1);
         save_cursor();
         move_cursor_down(1);
-        out( "t" );
+        clear_line();
+        out( cstr );
         restore_cursor();
-        // int cols_right = col - get_col() > 0 ? col - get_col() : 0;
-        // int lines_up   = line - get_line() > 0 ? line - get_line() : 0;
-        // move_cursor_right( cols_right );
-        // move_cursor_up( 1 );
-        // restore_cursor();
+
+        // maximum length for an int as string: -2147483648 → 11 chars + '\0'
+        char buf[12];
+        int len = snprintf(buf, sizeof(buf), "%d", mistake_cnt);
+        save_cursor();
+        move_cursor_down(2);
+        clear_line();
+        out( buf );
+        restore_cursor();
+    
 
 
-        // char c = *it;
-        // std::string one_char_str(1, c);       // C++ string with one character
-        // const char* cstr = one_char_str.c_str(); // const char* of that string
-        // int prevcol  = get_col();
-        // save_cursor();
-        // move_cursor_down(1);
-        // clear_line();
-        // std::string num = std::to_string( prevcol );
-        // out( num.c_str() );  
-        // restore_cursor();
-        // int curcol = get_col();
-        // if (prevcol == curcol) {}
-        // else if ( prevcol > curcol )
-        //     move_cursor_right(prevcol - curcol);
-        // else
-        //     move_cursor_left(curcol - prevcol);
-        // move_cursor_up(1);   
-
-
-
-        // // iterate model iterator depending on correctness or whether user has completed the model
-        // if ( it == model.end() && mistake_cnt > 0 ) {
-
-        //     it--;
-        // }
-        // else if ( it == model.end() ) {
-        //     break;
-        // }
-        // else {
-        //     it++;
-        // }
-        // move_cursor_right(1);
+        // iterate model iterator depending on correctness or whether user has completed the model
+        if ( it+1 == model.end() && mistake_cnt == 0 ) {
+            break;
+        }
+        else {
+            it++;
+        }
     }
 
     printf("\r\n");
     
-
+    clear_terminal();
+    move_cursor_home();
     return mistake_cnt;
 }
