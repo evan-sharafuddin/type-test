@@ -1,5 +1,4 @@
-// first instance of a typing test
-// trying to keep things simple here
+// ditching the inheritance for now
 
 #ifndef TYPE_TEST_BASIC_HPP
 #define TYPE_TEST_BASIC_HPP
@@ -7,12 +6,14 @@
 #include <string>
 #include <fstream>
 
-class TypeTestBasic : public TypeTestInterface {
+class TypeTestBasic {
 
 public:
     TypeTestBasic();
     ~TypeTestBasic();
 
+    void play_mult();
+    bool menu();
     void run();
 
 private:

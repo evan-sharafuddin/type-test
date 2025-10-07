@@ -1,19 +1,18 @@
 
-#include "type_test_interface.hpp"
+// #include "type_test_interface.hpp"
 #include "type_test_basic.cpp"
-#include "main_menu.cpp"
-#include "terminal.cpp"
+// #include "main_menu.cpp"
+// #include "terminal.cpp"
 
 #include "rawterm_utils.h"
 
 int main() {
-    Terminal t;
-    MainMenu mm;
-    TypeTestInterface* tt = new TypeTestBasic();
-
+    // Terminal t;
+    // MainMenu mm;
+    // TypeTestInterface* tt = new TypeTestBasic();
+    TypeTestBasic tt;
+    tt.play_mult();
     // this doesn't really do anything right now
-    t.main_menu = mm;
-    t.type_test = tt;
-
-    delete tt;
+    // t.main_menu = mm;
+    // t.type_test = tt;
 }

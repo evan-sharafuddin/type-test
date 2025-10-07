@@ -1,4 +1,4 @@
-
+// compile this to create a functioning version of the type test game
 
 #include <iostream>
 #include <string>
@@ -45,7 +45,7 @@ int main() {
                 it--;
 
                 if (mistake_cnt == 0) {
-                    foreground_color("black");
+                    foreground_color("default");
                 }
             }
             else if ( it == model.begin() ) { // don't want to go out of bounds, keep the 
@@ -91,7 +91,7 @@ int main() {
             mistake_cnt++;
         }
         else {
-            foreground_color("black");
+            foreground_color("default");
             // write(STDOUT_FILENO, "\x1b[0m", 4);
         }
 

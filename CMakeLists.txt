@@ -10,24 +10,25 @@ set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(rawterm)
 # add_library(RawTerm rawterm/rawterm.c)
 
-add_executable(TypeBasic src/basic_game.cpp)
-
 add_executable(TestExe   src/rawterm_test.cpp)
+add_executable(Game      src/main.cpp        )
 # NOTE: "PROJECT" refers to the current project. More important when there are submodules
 #       "CMAKE" refers to the overall CMAKE structure
 #       best to use "PROJECT" variables since that will increase scalability
 # NOTE: include PROJECT_BINARY_DIRECTORY because that is where library is stored
-target_include_directories(TypeBasic PUBLIC 
-    "${CMAKE_SOURCE_DIR}/rawterm"
-)
 
-target_link_libraries(TypeBasic PUBLIC rawterm)
 
 target_include_directories(TestExe PUBLIC 
     "${CMAKE_SOURCE_DIR}/rawterm"
 )
 
 target_link_libraries(TestExe PUBLIC rawterm)
+
+target_include_directories(Game PUBLIC 
+    "${CMAKE_SOURCE_DIR}/rawterm"
+    "${CMAKE_SOURCE_DIR}/include"
+)
+target_link_libraries(Game PUBLIC rawterm)
 
 # add_executable(Type src/main.cpp)
 
