@@ -11,6 +11,6 @@ add_library(rawterm STATIC
 
 target_include_directories(rawterm PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
-add_executable(Button test/button_test.c)
+# add_executable(Button test/button_test.c)
 
-target_include_directories(Button PUBLIC "${PROJECT_SOURCE_DIR}/include" "${PROJECT_SOURCE_DIR}/src")
+# target_include_directories(Button PUBLIC "${PROJECT_SOURCE_DIR}/include" "${PROJECT_SOURCE_DIR}/src")

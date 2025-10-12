@@ -63,17 +63,19 @@ typedef struct widgets {
 // need to think about whether I want to dynamically allocate widget_t,
 // or if its small enough that copying to new stack frame is not that labor intensive
 
-widget_t* default_widget();
+widget_t* init_widget();
 
-int add_button( const char*, int  );
-void add_title( const char*, int );
-void add_body( const char*, int);
+int free_widget( widget_t* w );
 
-void print_buttons();
+int add_button( widget_t* w, const char*, int  );
+int add_title( widget_t* w,  char*, int );
+int add_body( widget_t* w, char*, int);
 
-void remove_buttons();
+int print_buttons( widget_t* w );
 
-int prompt_buttons();
+int free_buttons( widget_t* w );
+
+int prompt_buttons( widget_t* w);
 
 #ifdef __cplusplus
 }

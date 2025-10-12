@@ -5,6 +5,7 @@
 
 #include <string>
 #include <fstream>
+#include "rawterm_widgets.h"
 
 class TypeTestBasic {
 
@@ -19,6 +20,8 @@ public:
 private:
     std::ifstream prompt_bank;
     std::string prompt;
+    bool game_is_started;
+    widget_t* main_menu;
 
 };
 

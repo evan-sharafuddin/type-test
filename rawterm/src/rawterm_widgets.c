@@ -8,39 +8,51 @@
 #include <stdlib.h>
 #include <errno.h>
 
+#define NULL_PTR -1
+widget_t* init_widget() {
+    widget_t* w = (widget_t*) malloc(sizeof(widget_t));
+    if (!w) return NULL;
 
-static widget_t widget = {
-    .buttons = NULL,
-    .titles  = NULL,
-    .bodies  = NULL,
+    w->buttons = NULL;
+    w->titles  = NULL;
+    w->bodies  = NULL;
 
-    .nbuttons = 0,
-    .ntitles = 0,
-    .nbodies = 0,
+    w->nbuttons = 0;
+    w->ntitles  = 0;
+    w->nbodies  = 0;
 
-    .fgbutton_sel = "red",
-    .bgbutton_sel = "blue",
-    .fgbutton_def = "gray", 
-    .bgbutton_def = "default",
+    w->fgbutton_sel = "red";
+    w->bgbutton_sel = "blue";
+    w->fgbutton_def = "gray"; 
+    w->bgbutton_def = "default";
 
-    .fgtitle = "white",
-    .bgtitle = "red",
+    w->fgtitle = "white";
+    w->bgtitle = "red";
 
-    .fgbody = "white",
-    .bgbody = "gray", 
-};
+    w->fgbody = "white";
+    w->bgbody = "gray";
+
+    return w;
+}
+
+int free_widget( widget_t* w ) {
+    if ( !w ) return NULL_PTR; 
+    free( w );
+    return 0;
+}
 
 // TODO add error handelling 
 // NOTE returns index of the button 
-int add_button( const char* text, int pad ) {
+int add_button( widget_t* w, const char* text, int pad ) {
     
+    if ( !w ) return NULL_PTR;
     // if ( !w ) return; // must have widget_t struct
 
     // have the first button we add be selected automatically
-    bool sel = !( widget.buttons );
+    bool sel = !( w->buttons );
 
     // increment button counter
-    ++widget.nbuttons;
+    ++w->nbuttons;
 
     button_t bt = {
         .text = text,
@@ -52,42 +64,46 @@ int add_button( const char* text, int pad ) {
 
     // NOTE C++ is type safe, so we cannot rely on implicit cast betwen void* pointer to our struct
     // need to explicitly cast
-    if ( !(widget.buttons) ) {
-        widget.buttons = (button_t*) malloc( widget.nbuttons*sizeof(button_t) );
+    if ( !(w->buttons) ) {
+        w->buttons = (button_t*) malloc( w->nbuttons*sizeof(button_t) );
     }
     else {
-        widget.buttons = (button_t*) realloc( widget.buttons, widget.nbuttons*sizeof(button_t) );
+        w->buttons = (button_t*) realloc( w->buttons, w->nbuttons*sizeof(button_t) );
     }
 
     // check for malloc/realloc issues
     // TODO make this better
 
-    if ( !widget.buttons ) fprintf(stderr, "malloc() or realloc() error");
+    if ( !w->buttons ) fprintf(stderr, "malloc() or realloc() error");
 
-    widget.buttons[widget.nbuttons-1] = bt;
+    w->buttons[w->nbuttons-1] = bt;
 
     // return index of this button (this will always be 0 or greater)
-    return widget.nbuttons - 1;
+    return w->nbuttons - 1;
 
 }
 
 // TODO create clean function that resets widget entirely
-void remove_buttons() {
-    free( widget.buttons );
+int free_buttons( widget_t* w ) {
+
+    if ( !w ) return NULL_PTR;
+    free( w->buttons );
+    return 0;
 }
 
 // TODO might want to more explicitly check for deref null pointers
-void print_buttons() {
+int print_buttons( widget_t* w ) {
+    if ( !w ) return NULL_PTR;
 
     button_t bt;
-    for ( int i = 0; i < widget.nbuttons; ++i ) {
-        bt = widget.buttons[i];
+    for ( int i = 0; i < w->nbuttons; ++i ) {
+        bt = w->buttons[i];
 
         char pad [bt.pad];
         sprintf( pad, "%*s", bt.pad, "" );
 
-        foreground_color( (bt.sel) ? widget.fgbutton_sel : widget.fgbutton_def );
-        background_color( (bt.sel) ? widget.fgbutton_sel : widget.fgbutton_def );
+        foreground_color( (bt.sel) ? w->fgbutton_sel : w->fgbutton_def );
+        background_color( (bt.sel) ? w->fgbutton_sel : w->fgbutton_def );
         out(pad);
         out(bt.text);
         out(pad);
@@ -95,9 +111,13 @@ void print_buttons() {
         reset_formatting();
         out(" ");
     }
+
+    return 0;
 }
 
-int prompt_buttons() {
+int prompt_buttons( widget_t* w ) {
+
+    if ( !w ) return NULL_PTR;
     // select button!
 #define ENTER 13 // TODO add all keys as compiler defs
     
@@ -105,7 +125,7 @@ int prompt_buttons() {
     hide_cursor();
 
     // print out buttons
-    print_buttons();
+    print_buttons( w );
 
     while (1) {
         char c = '\0';
@@ -120,8 +140,8 @@ int prompt_buttons() {
             show_cursor();
             clear_line();
 
-            for ( int i = 0; i < widget.nbuttons; ++i ) {
-                if ( widget.buttons[i].sel ) return i;
+            for ( int i = 0; i < w->nbuttons; ++i ) {
+                if ( w->buttons[i].sel ) return i;
             }
 
             // no button selected? this should be an error
@@ -147,20 +167,20 @@ int prompt_buttons() {
                 else // select the appropriate button
                 {
                     bool sel; 
-                    for ( int i = 0; i < widget.nbuttons; ++i ) {
+                    for ( int i = 0; i < w->nbuttons; ++i ) {
                         
-                        if ( widget.buttons[i].sel ) {
+                        if ( w->buttons[i].sel ) {
                             
                             // if left arrow, select left unless we are already on leftmost button
                             if ( left && !(i == 0) ) {
-                                widget.buttons[i].sel = false;
-                                widget.buttons[i-1].sel = true;
+                                w->buttons[i].sel = false;
+                                w->buttons[i-1].sel = true;
                             }
 
                             // if right arrow, select right unless we are already on rightmost button
-                            else if ( right && !(i == widget.nbuttons-1) ) { 
-                                widget.buttons[i].sel = false;
-                                widget.buttons[i+1].sel = true;
+                            else if ( right && !(i == w->nbuttons-1) ) { 
+                                w->buttons[i].sel = false;
+                                w->buttons[i+1].sel = true;
                             }  
 
                             break; // done 
@@ -172,8 +192,9 @@ int prompt_buttons() {
                 clear_line();
 
                 // print out the buttons on the line 
-                print_buttons();
+                print_buttons( w );
             }
         }
     }
+    return 0;
 }

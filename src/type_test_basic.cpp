@@ -9,10 +9,17 @@ TypeTestBasic::TypeTestBasic() {
     // std::cout << "Created TypeTestBasic instance" << std::endl;
     enable_raw_mode();
     clear_terminal();
+    #define PAD 1
+
+    main_menu = init_widget();
+    add_button( main_menu, "Play Game", PAD );
+    add_button( main_menu, "Quit"     , PAD );
 }
 
 TypeTestBasic::~TypeTestBasic() {
     // std::cout << "Destroyed TypeTestBasic instance" << std::endl;
+    free_widget( main_menu );
+    
     show_cursor();
     clear_terminal();
     move_cursor_home();
@@ -28,20 +35,15 @@ void TypeTestBasic::play_mult() {
 bool TypeTestBasic::menu() {
 
     // create buttons using rawterm_widgets
-    #define PAD 1
-    int start_game = add_button( "Start Game", PAD );
-    int quit = add_button( "Quit", PAD );
+    prompt_buttons( main_menu );
 
-    int sel = prompt_buttons();
-
-    if ( sel == start_game ) {
+    if ( main_menu->buttons[0].sel ) {
         run();
-        return true; // could do better with these return values
+        return true;
     }
     else {
         return false;
     }
-
 }
 
 void TypeTestBasic::run() {
