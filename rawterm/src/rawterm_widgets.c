@@ -21,15 +21,15 @@ widget_t* init_widget() {
     w->ntitles  = 0;
     w->nbodies  = 0;
 
-    w->fgbutton_sel = "red";
-    w->bgbutton_sel = "blue";
+    w->fgbutton_sel = "default";
+    w->bgbutton_sel = "red";
     w->fgbutton_def = "gray"; 
     w->bgbutton_def = "default";
 
-    w->fgtitle = "white";
+    w->fgtitle = "default";
     w->bgtitle = "red";
 
-    w->fgbody = "white";
+    w->fgbody = "default";
     w->bgbody = "gray";
 
     return w;
@@ -103,7 +103,7 @@ int print_buttons( widget_t* w ) {
         sprintf( pad, "%*s", bt.pad, "" );
 
         foreground_color( (bt.sel) ? w->fgbutton_sel : w->fgbutton_def );
-        background_color( (bt.sel) ? w->fgbutton_sel : w->fgbutton_def );
+        background_color( (bt.sel) ? w->bgbutton_sel : w->bgbutton_def );
         out(pad);
         out(bt.text);
         out(pad);
