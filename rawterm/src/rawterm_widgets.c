@@ -13,9 +13,18 @@ widget_t* init_widget() {
     widget_t* w = (widget_t*) malloc(sizeof(widget_t));
     if (!w) return NULL;
 
+    title_t blank_title = {
+        .text = "", 
+        .width = -1,
+    };
+    body_t blank_body = {
+        .text = "",
+        .width = -1,
+    };
+
     w->buttons = NULL;
-    w->titles  = NULL;
-    w->bodies  = NULL;
+    w->title   = blank_title;
+    w->body    = blank_body;
 
     w->nbuttons = 0;
     w->ntitles  = 0;
@@ -83,6 +92,26 @@ int add_button( widget_t* w, const char* text, int pad ) {
 
 }
 
+int set_title( widget_t* w, char* text, int width ) {
+    if ( !w ) return NULL_PTR;
+
+    w->title.text = text;
+    w->title.width = width;
+
+    return 0;
+
+}
+
+int set_body( widget_t* w, char* text, int width ) {
+    if ( !w ) return NULL_PTR;
+
+    w->body.text = text;
+    w->body.width = width;
+
+    return 0;
+
+}
+
 // TODO create clean function that resets widget entirely
 int free_buttons( widget_t* w ) {
 
@@ -115,6 +144,33 @@ int print_buttons( widget_t* w ) {
     return 0;
 }
 
+int print_title( widget_t* w ) {
+    if ( !w ) return NULL_PTR;
+
+#define NO_TITLE_DEF 2
+    if ( w->title.width == -1 )
+        return NO_TITLE_DEF;
+
+    // ignore width for now lol
+    out( w->title.text );
+
+    return 0;
+
+}
+
+int print_body( widget_t* w ) {
+    if ( !w ) return NULL_PTR;
+
+#define NO_BODY_DEF 3
+    if ( w->title.width == -1 )
+        return NO_BODY_DEF;
+
+    out( w->body.text );
+
+    return 0;
+
+}
+
 int prompt_buttons( widget_t* w ) {
 
     if ( !w ) return NULL_PTR;
@@ -123,6 +179,10 @@ int prompt_buttons( widget_t* w ) {
     
     // first hide the curser 
     hide_cursor();
+
+    // print out title and body
+    print_title( w );
+    print_body( w );
 
     // print out buttons
     print_buttons( w );

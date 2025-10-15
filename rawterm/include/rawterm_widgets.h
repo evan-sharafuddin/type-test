@@ -21,7 +21,7 @@ typedef struct button {
 
 typedef struct title {
     const char* text; // text for title 
-    int width;  // width of the button
+    int width;  // width of the title
 } title_t;
 
 typedef struct body {
@@ -35,8 +35,8 @@ typedef struct widgets {
     
     // pointer to array of each type of widget
     button_t* buttons;
-    title_t*  titles;
-    body_t* bodies;
+    title_t title;
+    body_t body;
 
     // keep track of number of each widget
     int nbuttons;
@@ -67,15 +67,19 @@ widget_t* init_widget();
 
 int free_widget( widget_t* w );
 
+// setters
 int add_button( widget_t* w, const char*, int  );
-int add_title( widget_t* w,  char*, int );
-int add_body( widget_t* w, char*, int);
+int set_title( widget_t* w,  char*, int );
+int set_body( widget_t* w, char*, int);
 
+// button stuff
 int print_buttons( widget_t* w );
-
 int free_buttons( widget_t* w );
-
 int prompt_buttons( widget_t* w);
+
+// title and body printing
+int print_title( widget_t* );
+int print_body( widget_t* );
 
 #ifdef __cplusplus
 }

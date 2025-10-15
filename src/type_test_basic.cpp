@@ -4,6 +4,8 @@
 #include "rawterm_widgets.h"
 
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 TypeTestBasic::TypeTestBasic() {
     // std::cout << "Created TypeTestBasic instance" << std::endl;
@@ -14,11 +16,17 @@ TypeTestBasic::TypeTestBasic() {
     main_menu = init_widget();
     add_button( main_menu, "Play Game", PAD );
     add_button( main_menu, "Quit"     , PAD );
+    set_title( main_menu, "Welcome to Type Test!", PAD );
+
+    stats_page = init_widget();
+    add_button( stats_page, "Continue", PAD );
+    set_title( stats_page, "Game Stats", PAD );
 }
 
 TypeTestBasic::~TypeTestBasic() {
     // std::cout << "Destroyed TypeTestBasic instance" << std::endl;
     free_widget( main_menu );
+    free_widget( stats_page );
     
     show_cursor();
     clear_terminal();
@@ -46,7 +54,7 @@ bool TypeTestBasic::menu() {
     }
 }
 
-void TypeTestBasic::run() {
+int TypeTestBasic::run() {
 
     std::string model = "User should type this out!";
     
@@ -58,6 +66,7 @@ void TypeTestBasic::run() {
 
     int mistake_cnt = 0;
     // int test_cnt = 0;
+    int total_mistakes = 0;
 
     auto it = model.begin();
 
@@ -71,7 +80,7 @@ void TypeTestBasic::run() {
             die("read");
 
         if ( input == 'q' ) {
-            break;
+            return -1; // terminated game early
         }
         
         if ( input == 127 ) {
@@ -126,6 +135,7 @@ void TypeTestBasic::run() {
             // write(STDOUT_FILENO, "\x1b[1;31m", 7);
             foreground_color("red");
             mistake_cnt++;
+            total_mistakes++;
         }
         else {
             foreground_color("default");
@@ -167,9 +177,9 @@ void TypeTestBasic::run() {
         }
     }
 
-    printf("\r\n");
-    
     clear_terminal();
     move_cursor_home();
+
+    return total_mistakes;
 
 }
